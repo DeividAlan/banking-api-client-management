@@ -7,11 +7,11 @@ class LegalEntityClientTable(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     business_name = Column(String, nullable=False)
-    revenue = Column(Float, nullable=True)
-    corporate_email = Column(String, nullable=True)
-    phone = Column(String, nullable=True)
-    category = Column(String, nullable=True)
-    balance = Column(Float, nullable=True)
+    revenue = Column(Float, nullable=False)
+    corporate_email = Column(String, nullable=False)
+    phone = Column(String, nullable=False)
+    category = Column(String, nullable=False)
+    balance = Column(Float, nullable=False)
 
     def __repr__(self):
         return (

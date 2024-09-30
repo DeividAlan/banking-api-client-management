@@ -7,11 +7,11 @@ class IndividualClientTable(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     full_name = Column(String, nullable=False)
-    monthly_income = Column(Float, nullable=True)
-    age = Column(Integer, nullable=True)
-    phone = Column(String, nullable=True)
-    category = Column(String, nullable=True)
-    balance = Column(Float, nullable=True)
+    monthly_income = Column(Float, nullable=False)
+    age = Column(Integer, nullable=False)
+    phone = Column(String, nullable=False)
+    category = Column(String, nullable=False)
+    balance = Column(Float, nullable=False)
 
     def __repr__(self):
         return (
