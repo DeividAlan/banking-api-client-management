@@ -1,79 +1,77 @@
 from typing import List, Optional
 from sqlalchemy.orm.exc import NoResultFound
-from src.models.sqlite.entities.individual_client import IndividualClientTable
+from src.models.sqlite.entities.legal_entity_client import LegalEntityClientTable
 from src.models.sqlite.interface.client import ClientInterface
 from src.errors.errors_types.http_invalid_balance import HttpInvalidBalanceError
 from src.errors.errors_types.http_not_found import HttpNotFoundError
 
 
-class IndividualClientRepository(ClientInterface):
+class LegalEntityClientRepository(ClientInterface):
     def __init__(self, db_connection) -> None:
         self.__db_connection = db_connection
 
-    def insert_individual_client(
+    def insert_legal_entity_client(
         self,
-        full_name: str,
-        monthly_income: float,
-        age: int,
+        business_name: str,
+        revenue: float,
+        corporate_email: str,
         phone: str,
         category: str,
         balance: float,
     ) -> None:
         with self.__db_connection as database:
             try:
-                individual_client_data = IndividualClientTable(
-                    full_name=full_name,
-                    monthly_income=monthly_income,
-                    age=age,
+                legal_entity_client_data = LegalEntityClientTable(
+                    business_name=business_name,
+                    revenue=revenue,
+                    corporate_email=corporate_email,
                     phone=phone,
                     category=category,
                     balance=balance,
                 )
 
-                database.session.add(individual_client_data)
+                database.session.add(legal_entity_client_data)
                 database.session.commit()
             except Exception as exception:
                 database.session.rollback()
                 raise exception
 
-    def list_individual_clients(self) -> List[IndividualClientTable]:
+    def list_legal_entity_clients(self) -> List[LegalEntityClientTable]:
         with self.__db_connection as database:
             try:
-                individual_clients = database.session.query(IndividualClientTable).all()
-                return individual_clients
+                legal_entity_clients = database.session.query(LegalEntityClientTable).all()
+                return legal_entity_clients
             except NoResultFound:
                 return []
 
-    def find_individual_client(self, individual_client_id: int) -> Optional[IndividualClientTable]:
+    def find_legal_entity_client(self, client_id: int) -> Optional[LegalEntityClientTable]:
         with self.__db_connection as database:
-            individual_client = database.session.query(IndividualClientTable).get(
-                individual_client_id
-            )
-            return individual_client
+            legal_entity_client = database.session.query(LegalEntityClientTable).get(client_id)
+            return legal_entity_client
 
     def check_balance(self, client_id: int) -> float:
         with self.__db_connection as database:
-            individual_client = database.session.query(IndividualClientTable).get(client_id)
+            legal_entity_client = database.session.query(LegalEntityClientTable).get(client_id)
 
-            if not individual_client:
+            if not legal_entity_client:
                 raise HttpNotFoundError("Client not found.")
 
-            return individual_client.balance
+            return legal_entity_client.balance
 
     def withdraw_money(self, client_id: int, amount: float) -> None:
         with self.__db_connection as database:
             try:
-                individual_client = database.session.query(IndividualClientTable).get(client_id)
+                legal_entity_client = database.session.query(LegalEntityClientTable).get(client_id)
 
-                if not individual_client:
+                if not legal_entity_client:
                     raise HttpNotFoundError("Client not found.")
 
-                if individual_client.balance < amount:
+                if legal_entity_client.balance < amount:
                     raise HttpInvalidBalanceError(
                         "Insufficient balance to complete the withdrawal."
                     )
 
-                individual_client.balance -= amount
+                legal_entity_client.balance -= amount
 
                 database.session.commit()
             except Exception as exception:

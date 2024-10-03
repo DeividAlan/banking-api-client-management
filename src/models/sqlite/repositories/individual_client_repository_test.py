@@ -3,8 +3,8 @@ import pytest
 from mock_alchemy.mocking import UnifiedAlchemyMagicMock
 from src.models.sqlite.entities.individual_client import IndividualClientTable
 from src.models.sqlite.repositories.individual_client_repository import IndividualClientRepository
-from src.errors.http_invalid_balance import HttpInvalidBalanceError
-from src.errors.http_not_found import HttpNotFoundError
+from src.errors.errors_types.http_invalid_balance import HttpInvalidBalanceError
+from src.errors.errors_types.http_not_found import HttpNotFoundError
 
 
 class MockConnection:
