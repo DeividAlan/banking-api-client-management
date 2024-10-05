@@ -37,5 +37,8 @@ class IndividualClientCreateController(IndividualClientCreateControllerInterface
             raise HttpBadRequestError("Full name contains invalid characters.")
 
     def __validate_phone(self, phone: str) -> None:
-        if not re.match(r"^\+?\d{10,15}$", phone):
-            raise HttpBadRequestError("Phone number is invalid.")
+        phone = phone.strip()
+        if not re.match(r"^55\d{2}\d{9}$", phone):
+            raise HttpBadRequestError(
+                "Phone number is invalid. Please use a valid format, such as '5511912345678'."
+            )

@@ -21,15 +21,13 @@ def test_create_individual_client():
         "full_name": "Jane Doe",
         "monthly_income": 5000.0,
         "age": 28,
-        "phone": "+1234567890",
+        "phone": "5511912345678",
         "category": "Regular",
         "balance": 1000.0,
     }
 
     controller = IndividualClientCreateController(MockClientRepository())
     response = controller.create(client_info)
-
-    # No response expected since the method returns None on successful creation
     assert response is None
 
 
@@ -38,7 +36,7 @@ def test_create_individual_client_error_empty_full_name():
         "full_name": "",
         "monthly_income": 5000.0,
         "age": 28,
-        "phone": "+1234567890",
+        "phone": "5511912345678",
         "category": "Regular",
         "balance": 1000.0,
     }
@@ -61,7 +59,10 @@ def test_create_individual_client_error_invalid_phone():
 
     controller = IndividualClientCreateController(MockClientRepository())
 
-    with pytest.raises(HttpBadRequestError, match="Phone number is invalid."):
+    with pytest.raises(
+        HttpBadRequestError,
+        match="Phone number is invalid. Please use a valid format, such as '5511912345678'.",
+    ):
         controller.create(client_info)
 
 
@@ -70,7 +71,7 @@ def test_create_individual_client_error_invalid_full_name():
         "full_name": "Jane123",
         "monthly_income": 5000.0,
         "age": 28,
-        "phone": "+1234567890",
+        "phone": "5511912345678",
         "category": "Regular",
         "balance": 1000.0,
     }

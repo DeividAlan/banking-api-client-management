@@ -12,7 +12,7 @@ class LegalEntityClientFindView(ViewInterface):
         self.__controller = controller
 
     def handle(self, http_request: HttpRequest) -> HttpResponse:
-        client_id = http_request.params.get("client_id")
+        client_id = http_request.param.get("client_id")
 
         if client_id is None:
             return HttpResponse(status_code=400, body={"message": "Client ID is required."})
